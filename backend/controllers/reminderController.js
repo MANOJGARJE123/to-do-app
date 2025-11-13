@@ -3,7 +3,7 @@ const Reminder = require('../models/reminder');
 const { sendEmail } = require('../utils/emailService');
 
 const scheduleReminder = async (task, user) => {
-  const reminderTime = new Date(task.dueDate.getTime() - (30 * 60 * 1000)); // 30 minutes before due date
+  const reminderTime = new Date(task.dueDate.getTime() - (30 * 60 * 1000));
 
   if (reminderTime > new Date()) {
     await Reminder.create({
