@@ -18,6 +18,7 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
+//middleware
 UserSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     next();
