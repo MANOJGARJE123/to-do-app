@@ -1,57 +1,67 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import React, { createContext, useState, useEffect, useContext } from "react";
+import axios from "axios";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  axios.defaults.baseURL = 'http://localhost:5000';
+  axios.defaults.baseURL = "http://localhost:5000";
 
   useEffect(() => {
-    const loadUser = async () => {
-      const token = localStorage.getItem('token');
+    const loadUser = () => {
+      const token = localStorage.getItem("token");
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+
       if (token) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        console.log('Frontend: Authorization header set with token:', token); // Debug log
-        const storedUser = JSON.parse(localStorage.getItem('user'));
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      }
+
+      if (storedUser) {
         setUser(storedUser);
       }
+
       setLoading(false);
     };
+
     loadUser();
   }, []);
 
   const login = async (email, password) => {
-    const res = await axios.post('/api/users/login', { email, password });
-    console.log('Login response data:', res.data);
+    const res = await axios.post("/api/users/login", { email, password });
+
     const { token, ...userData } = res.data;
-    localStorage.setItem('token', token);
-    console.log('Token stored in localStorage (login):', localStorage.getItem('token'));
-    localStorage.setItem('user', JSON.stringify(userData));
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    console.log('Frontend: Authorization header set after login:', token); // Debug log
+    userData.token = token;
+
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(userData));
+
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     setUser(userData);
   };
 
   const register = async (username, email, password) => {
-    const res = await axios.post('/api/users/register', { username, email, password });
-    console.log('Register response data:', res.data);
+    const res = await axios.post("/api/users/register", {
+      username,
+      email,
+      password,
+    });
+
     const { token, ...userData } = res.data;
-    localStorage.setItem('token', token);
-    console.log('Token stored in localStorage (register):', localStorage.getItem('token'));
-    localStorage.setItem('user', JSON.stringify(userData));
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    console.log('Frontend: Authorization header set after register:', token); // Debug log
+    userData.token = token;
+
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(userData));
+
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     setUser(userData);
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    delete axios.defaults.headers.common['Authorization'];
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    delete axios.defaults.headers.common["Authorization"];
     setUser(null);
   };
 
@@ -62,6 +72,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);

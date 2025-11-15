@@ -46,7 +46,7 @@ const createTask = async (req, res) => {
       description,
       dueDate,
       priority,
-      user: "userid1"
+      user: req.user._id, // Assign the authenticated user's ID
     });
 
     if (task.dueDate) {
@@ -54,9 +54,9 @@ const createTask = async (req, res) => {
     }
 
     res.status(201).json(task);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+  } catch (error) {
+    console.error('Error creating task:', error);
+    res.status(400).json({ message: 'Task validation failed: ' + error.message });
   }
 };
 
