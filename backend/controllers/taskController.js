@@ -33,6 +33,8 @@ const getTaskById = async (req, res) => {
 
 const createTask = async (req, res) => {
   const { title, description, dueDate, priority } = req.body;
+  
+  
 
   if (!title) {
     return res.status(400).json({ message: 'Please add a title' });
@@ -44,7 +46,7 @@ const createTask = async (req, res) => {
       description,
       dueDate,
       priority,
-      user: req.user.id,
+      user: "userid1"
     });
 
     if (task.dueDate) {

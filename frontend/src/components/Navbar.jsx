@@ -16,11 +16,31 @@ const Navbar = () => {
         </Link>
 
         <div className="hidden md:flex space-x-6 items-center">
-          <NavLink to="/" className="text-gray-700 hover:text-blue-600 transition duration-300" activeClassName="text-blue-600 font-semibold" end>Home</NavLink>
-          <NavLink to="/features" className="text-gray-700 hover:text-blue-600 transition duration-300" activeClassName="text-blue-600 font-semibold">Features</NavLink>
-          <NavLink to="/testimonials" className="text-gray-700 hover:text-blue-600 transition duration-300" activeClassName="text-blue-600 font-semibold">Testimonials</NavLink>
-          <NavLink to="/about" className="text-gray-700 hover:text-blue-600 transition duration-300" activeClassName="text-blue-600 font-semibold">About</NavLink>
-          <NavLink to="/contact" className="text-gray-700 hover:text-blue-600 transition duration-300" activeClassName="text-blue-600 font-semibold">Contact</NavLink>
+          <NavLink to="/" className={({ isActive }) =>
+            isActive
+              ? "text-blue-600 font-semibold transition duration-300"
+              : "text-gray-700 hover:text-blue-600 transition duration-300"
+          } end>Home</NavLink>
+          <NavLink to="/features" className={({ isActive }) =>
+            isActive
+              ? "text-blue-600 font-semibold transition duration-300"
+              : "text-gray-700 hover:text-blue-600 transition duration-300"
+          }>Features</NavLink>
+          <NavLink to="/testimonials" className={({ isActive }) =>
+            isActive
+              ? "text-blue-600 font-semibold transition duration-300"
+              : "text-gray-700 hover:text-blue-600 transition duration-300"
+          }>Testimonials</NavLink>
+          <NavLink to="/about" className={({ isActive }) =>
+            isActive
+              ? "text-blue-600 font-semibold transition duration-300"
+              : "text-gray-700 hover:text-blue-600 transition duration-300"
+          }>About</NavLink>
+          <NavLink to="/contact" className={({ isActive }) =>
+            isActive
+              ? "text-blue-600 font-semibold transition duration-300"
+              : "text-gray-700 hover:text-blue-600 transition duration-300"
+          }>Contact</NavLink>
           <Link
             to="/login"
             className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
@@ -47,11 +67,31 @@ const Navbar = () => {
       {/* Mobile menu */}
       {isOpen && (
         <div className="md:hidden bg-white mt-4 border-t border-gray-200">
-          <NavLink to="/" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" activeClassName="text-blue-600 font-semibold" onClick={toggleMenu} end>Home</NavLink>
-          <NavLink to="/features" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" activeClassName="text-blue-600 font-semibold" onClick={toggleMenu}>Features</NavLink>
-          <NavLink to="/testimonials" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" activeClassName="text-blue-600 font-semibold" onClick={toggleMenu}>Testimonials</NavLink>
-          <NavLink to="/about" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" activeClassName="text-blue-600 font-semibold" onClick={toggleMenu}>About</NavLink>
-          <NavLink to="/contact" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600" activeClassName="text-blue-600 font-semibold" onClick={toggleMenu}>Contact</NavLink>
+          <NavLink to="/" className={({ isActive }) =>
+            isActive
+              ? "block px-4 py-2 text-blue-600 font-semibold hover:bg-blue-50 hover:text-blue-600"
+              : "block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+          } onClick={toggleMenu} end>Home</NavLink>
+          <NavLink to="/features" className={({ isActive }) =>
+            isActive
+              ? "block px-4 py-2 text-blue-600 font-semibold hover:bg-blue-50 hover:text-blue-600"
+              : "block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+          } onClick={toggleMenu}>Features</NavLink>
+          <NavLink to="/testimonials" className={({ isActive }) =>
+            isActive
+              ? "block px-4 py-2 text-blue-600 font-semibold hover:bg-blue-50 hover:text-blue-600"
+              : "block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+          } onClick={toggleMenu}>Testimonials</NavLink>
+          <NavLink to="/about" className={({ isActive }) =>
+            isActive
+              ? "block px-4 py-2 text-blue-600 font-semibold hover:bg-blue-50 hover:text-blue-600"
+              : "block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+          } onClick={toggleMenu}>About</NavLink>
+          <NavLink to="/contact" className={({ isActive }) =>
+            isActive
+              ? "block px-4 py-2 text-blue-600 font-semibold hover:bg-blue-50 hover:text-blue-600"
+              : "block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+          } onClick={toggleMenu}>Contact</NavLink>
           <Link
             to="/login"
             className="block w-full text-center bg-blue-600 text-white px-4 py-2 mt-2 rounded-md hover:bg-blue-700 transition duration-300"
