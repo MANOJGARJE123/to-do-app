@@ -30,6 +30,43 @@ function DashboardPage() {
     }
   };
 
+  const handleDeleteTask = async (taskId) => {
+    try {
+      await taskService.deleteTask(taskId, user.token);
+      setTasks((prevTasks) => prevTasks.filter((task) => (task._id || task.id) !== taskId));
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
+
+  const handleToggleComplete = async (task) => {
+    try {
+      const updatedTask = await taskService.updateTask(
+        task._id || task.id,
+        { ...task, completed: !task.completed },
+        user.token
+      );
+      setTasks((prevTasks) =>
+        prevTasks.map((t) => (t._id || t.id) === (task._id || task.id) ? updatedTask : t)
+      );
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
+
+  const handleUpdateTask = async (taskId, updatedData) => {
+    try {
+      const updatedTask = await taskService.updateTask(taskId, updatedData, user.token);
+      setTasks((prevTasks) =>
+        prevTasks.map((t) => (t._id || t.id) === taskId ? updatedTask : t)
+      );
+      return updatedTask;
+    } catch (error) {
+      console.error("Error updating task:", error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     if (user) {
       const fetchTasks = async () => {
@@ -63,13 +100,17 @@ function DashboardPage() {
             <h1 className="text-3xl font-bold text-gray-800 mb-6">
               Welcome, {user.username}!
             </h1>
-            <QuickAddTask onQuickAddTask={handleQuickAddTask} />{" "}
-            {/* Add QuickAddTask component */}
+            <QuickAddTask onQuickAddTask={handleQuickAddTask} />
             {tasks.length === 0 ? (
               <EmptyDashboardContent />
             ) : (
               <>
-                <InboxContent tasks={tasks} />
+                <InboxContent 
+                  tasks={tasks} 
+                  onDeleteTask={handleDeleteTask}
+                  onToggleComplete={handleToggleComplete}
+                  onUpdateTask={handleUpdateTask}
+                />
               </>
             )}
           </div>

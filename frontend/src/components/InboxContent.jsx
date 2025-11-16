@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
+import EditTaskModal from './EditTaskModal';
+import DeleteTaskModal from './DeleteTaskModal';
 
-const InboxContent = ({ tasks = [], onAddTask }) => {
+const InboxContent = ({ tasks = [], onAddTask, onDeleteTask, onToggleComplete, onUpdateTask }) => {
+  const [editingTask, setEditingTask] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [deletingTask, setDeletingTask] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const formatDate = (dateString) => {
     if (!dateString) return null;
     const date = new Date(dateString);
@@ -31,6 +37,36 @@ const InboxContent = ({ tasks = [], onAddTask }) => {
     const due = new Date(dueDate);
     due.setHours(0, 0, 0, 0);
     return due < today;
+  };
+
+  const handleEdit = (task) => {
+    setEditingTask(task);
+    setIsEditModalOpen(true);
+  };
+
+  const handleSaveEdit = async (taskId, updatedData) => {
+    try {
+      await onUpdateTask(taskId, updatedData);
+      setIsEditModalOpen(false);
+      setEditingTask(null);
+    } catch (error) {
+      console.error('Error saving task:', error);
+    }
+  };
+
+  const handleDelete = (task) => {
+    setDeletingTask(task);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async (taskId) => {
+    try {
+      await onDeleteTask(taskId);
+      setIsDeleteModalOpen(false);
+      setDeletingTask(null);
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
   };
 
   if (!tasks || tasks.length === 0) {
@@ -84,27 +120,28 @@ const InboxContent = ({ tasks = [], onAddTask }) => {
                     : 'border-green-500'
             }`}
           >
-            {/* Task Header */}
+            {/* Task Header with Checkbox */}
             <div className="flex items-start justify-between mb-4">
-              <div className="flex-1">
-                <h3 className={`text-lg font-semibold text-gray-800 mb-2 ${
-                  task.completed ? 'line-through text-gray-500' : ''
-                }`}>
-                  {task.title}
-                </h3>
-                {task.description && (
-                  <p className="text-sm text-gray-600 line-clamp-2 mb-3">
-                    {task.description}
-                  </p>
-                )}
-              </div>
-              {task.completed && (
-                <div className="ml-2">
-                  <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                  </svg>
+              <div className="flex items-start flex-1">
+                <input
+                  type="checkbox"
+                  checked={task.completed || false}
+                  onChange={() => onToggleComplete && onToggleComplete(task)}
+                  className="mt-1 mr-3 w-5 h-5 text-red-600 border-gray-300 rounded focus:ring-red-500 cursor-pointer"
+                />
+                <div className="flex-1">
+                  <h3 className={`text-lg font-semibold text-gray-800 mb-2 ${
+                    task.completed ? 'line-through text-gray-500' : ''
+                  }`}>
+                    {task.title}
+                  </h3>
+                  {task.description && (
+                    <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+                      {task.description}
+                    </p>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
 
             {/* Task Details */}
@@ -142,7 +179,7 @@ const InboxContent = ({ tasks = [], onAddTask }) => {
               )}
             </div>
 
-            {/* Status Indicator */}
+            {/* Action Buttons */}
             <div className="mt-4 pt-4 border-t border-gray-200">
               <div className="flex items-center justify-between">
                 <span className={`text-xs font-medium ${
@@ -150,11 +187,61 @@ const InboxContent = ({ tasks = [], onAddTask }) => {
                 }`}>
                   {task.completed ? 'Completed' : 'Pending'}
                 </span>
+                <div className="flex items-center space-x-2">
+                  {onUpdateTask && (
+                    <button
+                      onClick={() => handleEdit(task)}
+                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                      title="Edit task"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                      </svg>
+                    </button>
+                  )}
+                  {onDeleteTask && (
+                    <button
+                      onClick={() => handleDelete(task)}
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                      title="Delete task"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                      </svg>
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Edit Task Modal */}
+      {editingTask && (
+        <EditTaskModal
+          task={editingTask}
+          isOpen={isEditModalOpen}
+          onClose={() => {
+            setIsEditModalOpen(false);
+            setEditingTask(null);
+          }}
+          onSave={handleSaveEdit}
+        />
+      )}
+
+      {/* Delete Task Modal */}
+      {deletingTask && (
+        <DeleteTaskModal
+          task={deletingTask}
+          isOpen={isDeleteModalOpen}
+          onClose={() => {
+            setIsDeleteModalOpen(false);
+            setDeletingTask(null);
+          }}
+          onConfirm={handleConfirmDelete}
+        />
+      )}
     </div>
   );
 };
