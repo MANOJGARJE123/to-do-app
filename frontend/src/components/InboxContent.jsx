@@ -3,6 +3,7 @@ import EditTaskModal from './EditTaskModal';
 import DeleteTaskModal from './DeleteTaskModal';
 
 const InboxContent = ({ tasks = [], onAddTask, onDeleteTask, onToggleComplete, onUpdateTask }) => {
+
   const [editingTask, setEditingTask] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [deletingTask, setDeletingTask] = useState(null);
@@ -110,7 +111,7 @@ const InboxContent = ({ tasks = [], onAddTask, onDeleteTask, onToggleComplete, o
         {tasks.map((task) => (
           <div
             key={task._id || task.id}
-            className={`bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 p-6 border-l-4 ${
+            className={`bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 py-5 px-6 border-l-4 h-64 flex flex-col ${
               task.completed 
                 ? 'border-gray-300 opacity-75' 
                 : task.priority === 'High' 
@@ -120,33 +121,31 @@ const InboxContent = ({ tasks = [], onAddTask, onDeleteTask, onToggleComplete, o
                     : 'border-green-500'
             }`}
           >
-            {/* Task Header with Checkbox */}
-            <div className="flex items-start justify-between mb-4">
+
+            <div className="flex items-start justify-between mb-3">
               <div className="flex items-start flex-1">
                 <input
                   type="checkbox"
                   checked={task.completed || false}
                   onChange={() => onToggleComplete && onToggleComplete(task)}
-                  className="mt-1 mr-3 w-5 h-5 text-red-600 border-gray-300 rounded focus:ring-red-500 cursor-pointer"
+                  className="mt-1 mr-3 w-5 h-5 text-blue-600 border-gray-300 rounded-full focus:ring-blue-500 cursor-pointer"
                 />
-                <div className="flex-1">
-                  <h3 className={`text-lg font-semibold text-gray-800 mb-2 ${
+                <div className="flex-1 min-w-0">
+                  <h3 className={`text-lg font-semibold text-gray-800 mb-1.5 ${
                     task.completed ? 'line-through text-gray-500' : ''
                   }`}>
                     {task.title}
                   </h3>
-                  {task.description && (
-                    <p className="text-sm text-gray-600 line-clamp-2 mb-3">
-                      {task.description}
-                    </p>
-                  )}
+                  <p className={`text-sm mb-2 line-clamp-1 ${
+                    task.description ? 'text-gray-600' : 'text-gray-400 italic'
+                  }`}>
+                    {task.description || 'No description'}
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Task Details */}
-            <div className="space-y-3">
-              {/* Priority Badge */}
+            <div className="space-y-2.5 flex-1 py-1">
               {task.priority && (
                 <div className="flex items-center">
                   <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getPriorityColor(task.priority)}`}>
@@ -155,20 +154,21 @@ const InboxContent = ({ tasks = [], onAddTask, onDeleteTask, onToggleComplete, o
                 </div>
               )}
 
-              {/* Due Date */}
-              {task.dueDate && (
-                <div className="flex items-center text-sm">
-                  <svg className="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                  </svg>
-                  <span className={`${isOverdue(task.dueDate) && !task.completed ? 'text-red-600 font-semibold' : 'text-gray-600'}`}>
-                    {formatDate(task.dueDate)}
-                    {isOverdue(task.dueDate) && !task.completed && ' (Overdue)'}
-                  </span>
-                </div>
-              )}
+              <div className="flex items-center text-sm">
+                <svg className="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <span className={task.dueDate 
+                  ? (isOverdue(task.dueDate) && !task.completed ? 'text-red-600 font-semibold' : 'text-gray-600')
+                  : 'text-gray-400 italic'
+                }>
+                  {task.dueDate 
+                    ? `${formatDate(task.dueDate)}${isOverdue(task.dueDate) && !task.completed ? ' (Overdue)' : ''}`
+                    : 'No Due Date'
+                  }
+                </span>
+              </div>
 
-              {/* Created Date */}
               {task.createdAt && (
                 <div className="flex items-center text-xs text-gray-400">
                   <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -179,8 +179,8 @@ const InboxContent = ({ tasks = [], onAddTask, onDeleteTask, onToggleComplete, o
               )}
             </div>
 
-            {/* Action Buttons */}
-            <div className="mt-4 pt-4 border-t border-gray-200">
+
+            <div className="mt-auto pt-3 border-t border-gray-200">
               <div className="flex items-center justify-between">
                 <span className={`text-xs font-medium ${
                   task.completed ? 'text-green-600' : 'text-gray-500'
@@ -217,7 +217,6 @@ const InboxContent = ({ tasks = [], onAddTask, onDeleteTask, onToggleComplete, o
         ))}
       </div>
 
-      {/* Edit Task Modal */}
       {editingTask && (
         <EditTaskModal
           task={editingTask}
@@ -230,7 +229,6 @@ const InboxContent = ({ tasks = [], onAddTask, onDeleteTask, onToggleComplete, o
         />
       )}
 
-      {/* Delete Task Modal */}
       {deletingTask && (
         <DeleteTaskModal
           task={deletingTask}
