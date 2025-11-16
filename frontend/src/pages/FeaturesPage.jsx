@@ -3,7 +3,7 @@ import FeaturesSection from '../components/FeaturesSection';
 
 const FeaturesPage = () => {
   return (
-    <div className="pt-16">
+    <div>
       <FeaturesSection />
     </div>
   );

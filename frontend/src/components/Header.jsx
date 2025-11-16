@@ -14,7 +14,7 @@ const Header = () => {
   console.log(user);
 
   return (
-    <div className="bg-white shadow-md p-4 flex justify-between items-center fixed top-0 left-64 right-0 z-10">
+    <div className="bg-white shadow-md p-4 flex justify-between items-center fixed top-0 left-64 right-0 z-10 h-16">
       <h1 className="text-xl font-bold">Inbox</h1>
       <div className="flex items-center space-x-4">
         {user != null ? (
