@@ -12,14 +12,14 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const loadUser = () => {
       const token = localStorage.getItem("token");
-      const storedUser = JSON.parse(localStorage.getItem("user"));
+      const storedUser = localStorage.getItem("user");
 
       if (token) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       }
 
       if (storedUser) {
-        setUser(storedUser);
+        setUser(JSON.parse(storedUser));
       }
 
       setLoading(false);
@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ user, loading, login, register, logout }}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 };

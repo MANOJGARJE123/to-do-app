@@ -11,11 +11,13 @@ const Header = () => {
     navigate('/login');
   };
 
+  console.log(user);
+
   return (
     <div className="bg-white shadow-md p-4 flex justify-between items-center fixed top-0 left-64 right-0 z-10">
       <h1 className="text-xl font-bold">Inbox</h1>
       <div className="flex items-center space-x-4">
-        {user ? (
+        {user != null ? (
           <button onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
             Logout
           </button>
