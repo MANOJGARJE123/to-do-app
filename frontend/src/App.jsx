@@ -9,7 +9,6 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
-import EmptyDashboardContent from './components/EmptyDashboardContent.jsx';
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 

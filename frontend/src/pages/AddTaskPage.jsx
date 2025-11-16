@@ -11,10 +11,9 @@ const AddTaskPage = () => {
   const handleAddTask = async (taskData) => {
     try {
       await taskService.createTask(taskData, user.token);
-      navigate('/dashboard'); // Navigate back to dashboard after adding task
+      navigate('/dashboard');
     } catch (error) {
       console.error('Error adding task:', error);
-      // Handle error (e.g., show error message)
     }
   };
 

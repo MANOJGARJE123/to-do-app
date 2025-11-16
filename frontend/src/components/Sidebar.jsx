@@ -5,7 +5,6 @@ import { useAuth } from '../context/AuthContext';
 const Sidebar = () => {
   const { user } = useAuth();
   
-  // Extract first name from username (first word if username contains spaces)
   const getFirstName = () => {
     if (!user || !user.username) return 'User';
     const firstName = user.username.split(' ')[0];

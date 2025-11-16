@@ -3,14 +3,15 @@ import React from 'react';
 const ContactSection = () => {
   return (
     <section className="relative py-20 bg-gradient-to-r from-blue-500 to-blue-700 text-white overflow-hidden">
-      {/* Background elements for glassmorphism */}
+      
       <div className="absolute inset-0 z-0 opacity-40">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-500"></div>
         <div className="absolute top-1/2 right-1/4 w-64 h-64 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-1500"></div>
         <div className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2500"></div>
       </div>
       <div className="relative z-10 container mx-auto px-8 max-w-5xl md:flex md:space-x-10 items-center justify-between">
-        {/* Left Column: App Info */}
+      
+      
         <div className="md:w-1/2 text-center md:text-left mb-10 md:mb-0">
           <h2 className="text-5xl font-extrabold leading-tight mb-4 text-white">
             Ready to Get Organized?

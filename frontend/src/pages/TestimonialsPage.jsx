@@ -1,5 +1,4 @@
 import React from 'react';
-import TestimonialsSection, { TestimonialCard } from '../components/TestimonialsSection';
 import FullTestimonialsSection from '../components/FullTestimonialsSection';
 
 const TestimonialsPage = () => {

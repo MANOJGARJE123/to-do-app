@@ -46,7 +46,7 @@ const createTask = async (req, res) => {
       description,
       dueDate,
       priority,
-      user: req.user._id, // Assign the authenticated user's ID
+      user: req.user._id,
     });
 
     if (task.dueDate) {
