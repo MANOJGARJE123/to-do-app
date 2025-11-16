@@ -1,13 +1,26 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Sidebar = () => {
+  const { user } = useAuth();
+  
+  // Extract first name from username (first word if username contains spaces)
+  const getFirstName = () => {
+    if (!user || !user.username) return 'User';
+    const firstName = user.username.split(' ')[0];
+    return firstName;
+  };
+
+  const firstName = getFirstName();
+  const firstLetter = firstName.charAt(0).toUpperCase();
+
   return (
     <div className="w-64 bg-white shadow-md h-screen fixed">
       <div className="p-4 border-b">
         <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">M</div>
-          <span className="font-semibold text-lg">Manoj</span>
+          <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">{firstLetter}</div>
+          <span className="font-semibold text-lg">{firstName}</span>
           <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
         </div>
       </div>
