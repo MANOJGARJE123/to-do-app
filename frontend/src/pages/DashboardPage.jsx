@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 import Sidebar from "../components/Sidebar";
@@ -16,7 +16,7 @@ function DashboardPage() {
   const { user, loading } = auth;
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
-  const [currentView, setCurrentView] = useState("inbox");
+  const [currentView, setCurrentView] = useState("inbox"); // Default to "inbox"
 
   const handleQuickAddTask = async (taskData) => {
     try {
@@ -71,7 +71,7 @@ function DashboardPage() {
     if (user) {
       const fetchTasks = async () => {
         try {
-          const fetchedTasks = await taskService.getTasks(user.token);
+          const fetchedTasks = await taskService.getTasks(user.token, currentView);
           console.log(fetchedTasks);
           setTasks(fetchedTasks);
         } catch (error) {
@@ -80,7 +80,7 @@ function DashboardPage() {
       };
       fetchTasks();
     }
-  }, [user]);
+  }, [user, currentView]);
 
   if (loading) {
     return <div>Loading dashboard...</div>;
@@ -98,7 +98,7 @@ function DashboardPage() {
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 pt-16 ml-64">
           <div className="container mx-auto px-6 pt-4 pb-8">
             <h1 className="text-3xl font-bold text-gray-800 mb-6">
-              Welcome, {user.username}!
+              {currentView.charAt(0).toUpperCase() + currentView.slice(1)} Tasks
             </h1>
             <QuickAddTask onQuickAddTask={handleQuickAddTask} />
             {tasks.length === 0 ? (
@@ -110,6 +110,7 @@ function DashboardPage() {
                   onDeleteTask={handleDeleteTask}
                   onToggleComplete={handleToggleComplete}
                   onUpdateTask={handleUpdateTask}
+                  currentView={currentView}
                 />
               </>
             )}

@@ -4,7 +4,42 @@ const Reminder = require('../models/reminder');
 
 const getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({ user: req.user.id });
+    const { filter } = req.query;
+    const userId = req.user.id;
+    let query = { user: userId };
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    switch (filter) {
+      case "today":
+        query.dueDate = {
+          $gte: today,
+          $lt: tomorrow,
+        };
+        query.completed = false; // Only show incomplete tasks for 'Today'
+        break;
+      case "upcoming":
+        query.dueDate = {
+          $gte: tomorrow,
+        };
+        query.completed = false; // Only show incomplete tasks for 'Upcoming'
+        break;
+      case "completed":
+        query.completed = true;
+        break;
+      case "inbox":
+      default:
+        query.completed = false;
+        query.dueDate = null; // Tasks with no due date and not completed
+        // If inbox should include all uncompleted tasks regardless of due date, comment out the line above.
+        break;
+    }
+
+    const tasks = await Task.find(query);
     res.status(200).json(tasks);
   } catch (err) {
     console.error(err.message);

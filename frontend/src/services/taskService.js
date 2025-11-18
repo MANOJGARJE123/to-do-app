@@ -12,13 +12,13 @@ const createTask = async (taskData, token) => {
   return response.data;
 };
 
-const getTasks = async (token) => {
+const getTasks = async (token, filter = "inbox") => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
-  const response = await axios.get(API_URL, config);
+  const response = await axios.get(`${API_URL}?filter=${filter}`, config);
   return response.data;
 };
 
