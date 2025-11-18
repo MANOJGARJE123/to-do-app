@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 import Sidebar from "../components/Sidebar";
@@ -15,8 +15,9 @@ function DashboardPage() {
   const auth = useAuth() || {};
   const { user, loading } = auth;
   const navigate = useNavigate();
-  const [tasks, setTasks] = useState([]);
   const [currentView, setCurrentView] = useState("inbox"); // Default to "inbox"
+  const [allTasks, setAllTasks] = useState([]);
+  const [displayTasks, setDisplayTasks] = useState([]);
 
   const handleQuickAddTask = async (taskData) => {
     try {
@@ -24,7 +25,7 @@ function DashboardPage() {
         { ...taskData, description: "", dueDate: null, priority: "Medium" },
         user.token
       );
-      setTasks((prevTasks) => [...prevTasks, response]);
+      setAllTasks((prevAllTasks) => [...prevAllTasks, response]); // Update allTasks
     } catch (error) {
       console.error("Error creating quick task:", error);
     }
@@ -33,7 +34,9 @@ function DashboardPage() {
   const handleDeleteTask = async (taskId) => {
     try {
       await taskService.deleteTask(taskId, user.token);
-      setTasks((prevTasks) => prevTasks.filter((task) => (task._id || task.id) !== taskId));
+      setAllTasks((prevAllTasks) =>
+        prevAllTasks.filter((task) => (task._id || task.id) !== taskId)
+      ); // Update allTasks
     } catch (error) {
       console.error("Error deleting task:", error);
     }
@@ -46,9 +49,11 @@ function DashboardPage() {
         { ...task, completed: !task.completed },
         user.token
       );
-      setTasks((prevTasks) =>
-        prevTasks.map((t) => (t._id || t.id) === (task._id || task.id) ? updatedTask : t)
-      );
+      setAllTasks((prevAllTasks) =>
+        prevAllTasks.map((t) =>
+          (t._id || t.id) === (task._id || task.id) ? updatedTask : t
+        )
+      ); // Update allTasks
     } catch (error) {
       console.error("Error updating task:", error);
     }
@@ -57,9 +62,9 @@ function DashboardPage() {
   const handleUpdateTask = async (taskId, updatedData) => {
     try {
       const updatedTask = await taskService.updateTask(taskId, updatedData, user.token);
-      setTasks((prevTasks) =>
-        prevTasks.map((t) => (t._id || t.id) === taskId ? updatedTask : t)
-      );
+      setAllTasks((prevAllTasks) =>
+        prevAllTasks.map((t) => (t._id || t.id) === taskId ? updatedTask : t)
+      ); // Update allTasks
       return updatedTask;
     } catch (error) {
       console.error("Error updating task:", error);
@@ -73,7 +78,7 @@ function DashboardPage() {
         try {
           const fetchedTasks = await taskService.getTasks(user.token, currentView);
           console.log(fetchedTasks);
-          setTasks(fetchedTasks);
+          setAllTasks(fetchedTasks); // Store all fetched tasks
         } catch (error) {
           console.error("Error fetching tasks:", error);
         }
@@ -81,6 +86,49 @@ function DashboardPage() {
       fetchTasks();
     }
   }, [user, currentView]);
+
+  useEffect(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    const filterTasks = () => {
+      let filtered = [...allTasks]; // Start with all tasks
+
+      switch (currentView) {
+        case "today":
+          filtered = filtered.filter(
+            (task) =>
+              !task.completed &&
+              task.dueDate &&
+              new Date(task.dueDate).setHours(0, 0, 0, 0) === today.setHours(0, 0, 0, 0)
+          );
+          break;
+        case "upcoming":
+          filtered = filtered.filter(
+            (task) =>
+              !task.completed &&
+              task.dueDate &&
+              new Date(task.dueDate).setHours(0, 0, 0, 0) >= tomorrow.setHours(0, 0, 0, 0)
+          );
+          break;
+        case "completed":
+          filtered = filtered.filter((task) => task.completed);
+          break;
+        case "inbox":
+        default:
+          filtered = filtered.filter(
+            (task) => !task.completed && task.dueDate === null
+          );
+          break;
+      }
+      setDisplayTasks(filtered);
+    };
+
+    filterTasks();
+  }, [allTasks, currentView]); // Re-filter when allTasks or currentView changes
 
   if (loading) {
     return <div>Loading dashboard...</div>;
@@ -101,12 +149,12 @@ function DashboardPage() {
               {currentView.charAt(0).toUpperCase() + currentView.slice(1)} Tasks
             </h1>
             <QuickAddTask onQuickAddTask={handleQuickAddTask} />
-            {tasks.length === 0 ? (
+            {displayTasks.length === 0 ? (
               <EmptyDashboardContent />
             ) : (
               <>
                 <InboxContent 
-                  tasks={tasks} 
+                  tasks={displayTasks} 
                   onDeleteTask={handleDeleteTask}
                   onToggleComplete={handleToggleComplete}
                   onUpdateTask={handleUpdateTask}
