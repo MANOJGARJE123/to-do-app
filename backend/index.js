@@ -13,6 +13,7 @@ const limiter = rateLimit({
 
 const userRoutes = require('./routes/userRoutes');
 const taskRoutes = require('./routes/taskRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 const { startReminderScheduler } = require('./utils/schedule');
 
 dotenv.config();
@@ -24,15 +25,13 @@ app.use(cors("*"));
 app.use(express.json());
 app.use(limiter);
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error(err));
 
 app.use('/api/users', userRoutes);
 app.use('/api/tasks', taskRoutes);
+app.use('/api/contact', contactRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
