@@ -29,7 +29,7 @@ const Sidebar = ({ currentView, setCurrentView }) => {
             <NavLink
               to="/dashboard?filter=inbox"
               onClick={() => setCurrentView("inbox")}
-              className={`flex items-center p-2 text-gray-700 rounded-md mx-2 ${currentView === "inbox" ? "bg-red-100" : "hover:bg-gray-100"
+              className={`flex items-center p-2 text-gray-700 rounded-md mx-2 cursor-pointer ${currentView === "inbox" ? "bg-red-100" : "hover:bg-gray-100"
                 }`}
             >
               <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4m16 0v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4"></path></svg>
@@ -40,7 +40,7 @@ const Sidebar = ({ currentView, setCurrentView }) => {
             <NavLink
               to="/dashboard?filter=today"
               onClick={() => setCurrentView("today")}
-              className={`flex items-center p-2 text-gray-700 rounded-md mx-2 ${currentView === "today" ? "bg-gray-100" : "hover:bg-gray-100"
+              className={`flex items-center p-2 text-gray-700 rounded-md mx-2 cursor-pointer ${currentView === "today" ? "bg-gray-100" : "hover:bg-gray-100"
                 }`}
             >
               <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -51,7 +51,7 @@ const Sidebar = ({ currentView, setCurrentView }) => {
             <NavLink
               to="/dashboard?filter=upcoming"
               onClick={() => setCurrentView("upcoming")}
-              className={`flex items-center p-2 text-gray-700 rounded-md mx-2 ${currentView === "upcoming" ? "bg-gray-100" : "hover:bg-gray-100"
+              className={`flex items-center p-2 text-gray-700 rounded-md mx-2 cursor-pointer ${currentView === "upcoming" ? "bg-gray-100" : "hover:bg-gray-100"
                 }`}
             >
               <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -62,7 +62,7 @@ const Sidebar = ({ currentView, setCurrentView }) => {
             <NavLink
               to="/dashboard?filter=completed"
               onClick={() => setCurrentView("completed")}
-              className={`flex items-center p-2 text-gray-700 rounded-md mx-2 ${currentView === "completed" ? "bg-gray-100" : "hover:bg-gray-100"
+              className={`flex items-center p-2 text-gray-700 rounded-md mx-2 cursor-pointer ${currentView === "completed" ? "bg-gray-100" : "hover:bg-gray-100"
                 }`}
             >
               <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -70,20 +70,6 @@ const Sidebar = ({ currentView, setCurrentView }) => {
             </NavLink>
           </li>
         </ul>
-        <div className="mt-6 mx-2">
-          <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">My Projects</h2>
-          <ul className="mt-2">
-            <li className="mb-2">
-              <NavLink to="/project/getting-started" className={({ isActive }) =>
-                isActive
-                  ? "flex items-center p-2 text-gray-700 bg-gray-100 rounded-md"
-                  : "flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-md"
-              }>
-                <span className="mr-3">#</span> Getting Started
-              </NavLink>
-            </li>
-          </ul>
-        </div>
       </nav>
       <div className="absolute bottom-4 left-0 w-full p-4 border-t">
       </div>

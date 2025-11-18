@@ -81,7 +81,7 @@ const InboxContent = ({ tasks = [], onAddTask, onDeleteTask, onToggleComplete, o
           Inbox is your go-to spot for quick task entry. Clear your mind now, organize when you're ready.
         </p>
         {onAddTask && (
-          <button onClick={onAddTask} className="bg-red-500 text-white px-4 py-2 rounded-md flex items-center hover:bg-red-600">
+          <button onClick={onAddTask} className="bg-red-500 text-white px-4 py-2 rounded-md flex items-center hover:bg-red-600 cursor-pointer">
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
             Add task
           </button>
@@ -97,7 +97,7 @@ const InboxContent = ({ tasks = [], onAddTask, onDeleteTask, onToggleComplete, o
         {onAddTask && (
           <button 
             onClick={onAddTask} 
-            className="bg-red-500 text-white px-4 py-2 rounded-md flex items-center hover:bg-red-600 transition-colors"
+            className="bg-red-500 text-white px-4 py-2 rounded-md flex items-center hover:bg-red-600 transition-colors cursor-pointer"
           >
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path>
@@ -191,7 +191,7 @@ const InboxContent = ({ tasks = [], onAddTask, onDeleteTask, onToggleComplete, o
                   {onUpdateTask && (
                     <button
                       onClick={() => handleEdit(task)}
-                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-md transition-colors cursor-pointer"
                       title="Edit task"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -202,7 +202,7 @@ const InboxContent = ({ tasks = [], onAddTask, onDeleteTask, onToggleComplete, o
                   {onDeleteTask && (
                     <button
                       onClick={() => handleDelete(task)}
-                      className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors cursor-pointer"
                       title="Delete task"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

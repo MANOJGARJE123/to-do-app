@@ -20,13 +20,13 @@ const getTasks = async (req, res) => {
           $gte: today,
           $lt: tomorrow,
         };
-        query.completed = false; // Only show incomplete tasks for 'Today'
+        query.completed = false;
         break;
       case "upcoming":
         query.dueDate = {
           $gte: tomorrow,
         };
-        query.completed = false; // Only show incomplete tasks for 'Upcoming'
+        query.completed = false;
         break;
       case "completed":
         query.completed = true;
@@ -34,8 +34,7 @@ const getTasks = async (req, res) => {
       case "inbox":
       default:
         query.completed = false;
-        query.dueDate = null; // Tasks with no due date and not completed
-        // If inbox should include all uncompleted tasks regardless of due date, comment out the line above.
+        query.dueDate = null; 
         break;
     }
 
