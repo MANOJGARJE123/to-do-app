@@ -1,17 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const ContactSection = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+
+  const { name, email, message } = formData;
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post('/api/contact', formData);
+      console.log(res.data);
+      alert('Your message has been sent successfully!');
+      setFormData({
+        name: '',
+        email: '',
+        message: '',
+      });
+    } catch (error) {
+      console.error(error.response.data);
+      alert('Error sending message.');
+    }
+  };
+
   return (
     <section className="relative py-20 bg-gradient-to-r from-blue-500 to-blue-700 text-white overflow-hidden">
-      
+
       <div className="absolute inset-0 z-0 opacity-40">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-500"></div>
         <div className="absolute top-1/2 right-1/4 w-64 h-64 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-1500"></div>
         <div className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2500"></div>
       </div>
       <div className="relative z-10 container mx-auto px-8 max-w-5xl md:flex md:space-x-10 items-center justify-between">
-      
-      
+
+
         <div className="md:w-1/2 text-center md:text-left mb-10 md:mb-0">
           <h2 className="text-5xl font-extrabold leading-tight mb-4 text-white">
             Ready to Get Organized?
@@ -36,13 +66,15 @@ const ContactSection = () => {
           <h2 className="text-4xl font-extrabold mb-8 text-gray-900">
             Let's Connect
           </h2>
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="name" className="sr-only">Name</label>
               <input
                 type="text"
                 id="name"
                 name="name"
+                value={name}
+                onChange={handleChange}
                 spellCheck="false"
                 className="w-full p-3 rounded-md bg-white bg-opacity-70 border border-gray-300 border-opacity-50 placeholder-gray-700 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:border-transparent"
                 placeholder="Your Name"
@@ -54,6 +86,8 @@ const ContactSection = () => {
                 type="email"
                 id="email"
                 name="email"
+                value={email}
+                onChange={handleChange}
                 spellCheck="false"
                 className="w-full p-3 rounded-md bg-white bg-opacity-70 border border-gray-300 border-opacity-50 placeholder-gray-700 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:border-transparent"
                 placeholder="Your Email"
@@ -64,6 +98,8 @@ const ContactSection = () => {
               <textarea
                 id="message"
                 name="message"
+                value={message}
+                onChange={handleChange}
                 rows="4"
                 spellCheck="false"
                 className="w-full p-3 rounded-md bg-white bg-opacity-70 border border-gray-300 border-opacity-50 placeholder-gray-700 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:border-transparent"

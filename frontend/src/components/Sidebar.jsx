@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 
 const Sidebar = () => {
   const { user } = useAuth();
-  
+
   const getFirstName = () => {
     if (!user || !user.username) return 'User';
     const firstName = user.username.split(' ')[0];
@@ -25,26 +25,6 @@ const Sidebar = () => {
       </div>
       <nav className="mt-4">
         <ul>
-          <li className="mb-2">
-            <NavLink to="/add-task" className={({ isActive }) =>
-              isActive
-                ? "flex items-center p-2 text-red-500 bg-red-100 rounded-md mx-2"
-                : "flex items-center p-2 text-red-500 hover:bg-red-100 rounded-md mx-2"
-            }>
-              <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
-              Add task
-            </NavLink>
-          </li>
-          <li className="mb-2">
-            <NavLink to="/search" className={({ isActive }) =>
-              isActive
-                ? "flex items-center p-2 text-gray-700 bg-gray-100 rounded-md mx-2"
-                : "flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-md mx-2"
-            }>
-              <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-              Search
-            </NavLink>
-          </li>
           <li className="mb-2">
             <NavLink to="/inbox" className={({ isActive }) =>
               isActive
@@ -114,28 +94,6 @@ const Sidebar = () => {
         </div>
       </nav>
       <div className="absolute bottom-4 left-0 w-full p-4 border-t">
-        <ul>
-          <li className="mb-2">
-            <NavLink to="/add-team" className={({ isActive }) =>
-              isActive
-                ? "flex items-center p-2 text-gray-700 bg-gray-100 rounded-md mx-2"
-                : "flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-md mx-2"
-            }>
-              <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
-              Add a team
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/help-resources" className={({ isActive }) =>
-              isActive
-                ? "flex items-center p-2 text-gray-700 bg-gray-100 rounded-md mx-2"
-                : "flex items-center p-2 text-gray-700 hover:bg-gray-100 rounded-md mx-2"
-            }>
-              <svg className="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.228 9.247a4.125 4.125 0 115.834 5.834L12 18.002l-1.414-1.414-4.243 4.243a1 1 0 01-1.414 0l-1.414-1.414a1 1 0 010-1.414l4.243-4.243-1.414-1.414z"></path></svg>
-              Help & resources
-            </NavLink>
-          </li>
-        </ul>
       </div>
     </div>
   );
